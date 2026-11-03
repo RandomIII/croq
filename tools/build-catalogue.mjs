@@ -9,6 +9,8 @@ const clean=s=>(s||'').replace(/<[^>]*>/g,'').replace(/\u2014/g,',').trim();
 const date='2026-11-03';
 const base={checkedAt:date,availability:'listed',price:{solo:null,menu:null},traces:[],nutrition:[],allergens:null,ingredients:[],isNew:false};
 const products=[];
+const priorPath=path.join(root,'public','data','products.json');
+const previous=fs.existsSync(priorPath)?JSON.parse(fs.readFileSync(priorPath,'utf8')):[];
 const mcImage='https://eu-images.contentstack.com/v3/assets/blt5004e64d3579c43f/';
 const mc=[
  {id:'mc-big-mac',name:'Big Mac™',slug:'big-mac',image:mcImage+'blt53e76fa73b472f03/666c66deb01d0ed0814618a2/BigMac_GLOBAL_400x400px_72DPI.png?auto=webp',description:'Deux steaks hachés, un pain à trois étages et la sauce Big Mac. Le grand classique de McDonald’s.',descriptionType:'summary',ingredients:['Viande','Pain','Salade','Fromage','Sauce','Oignons','Cornichons'],allergens:['Gluten','Sésame','Lait','Moutarde','Œufs'],nutrition:[{label:'Énergie',value:'530',unit:'kcal'},{label:'Protéines',value:'27',unit:'g'},{label:'Lipides',value:'27',unit:'g'},{label:'Glucides',value:'42',unit:'g'},{label:'Sel',value:'2,3',unit:'g'}],order:1},
@@ -89,6 +91,12 @@ if(exists('kfc-browser.json')){
   products.push({...base,id:'kfc-'+filename.toLowerCase().replace(/[^a-z0-9-]/g,'-')+'-'+key.replace(/[^a-z0-9]/g,'').slice(-12),brand:'kfc',category,name:clean(p.name),description,descriptionType:'official',image:p.image,source:detail?.source||'https://www.kfc.fr/notre-carte',allergenSource:'https://www.kfc.fr/informations-sur-les-allergenes',allergens,nutrition,isNew:/Raclette/i.test(p.name),order:/^Colonel Original®$/.test(p.name)?4:/^5 Tenders/.test(p.name)?8:/^Tower® Cheese/.test(p.name)?12:100});
  }
 }
+// Les éditions restent conservées, même lorsque leur campagne est terminée.
+const editions=path.join(root,'data','editions.json');
+if(fs.existsSync(editions))for(const p of JSON.parse(fs.readFileSync(editions,'utf8'))){const index=products.findIndex(x=>x.id===p.id);if(index<0)products.push(p);else Object.assign(products[index],p);}
+// Une archive n'est jamais effacée par un nouvel import. Une disparition de carte
+// ne prouve pas un retrait : son statut doit être documenté dans editions.json.
+for(const p of previous.filter(p=>p.temporal?.status==='archived'||(p.temporal?.endsOn&&p.temporal.endsOn<date)))if(!products.some(x=>x.id===p.id))products.push(p);
 // Les remplacements locaux sont explicites et conservés entre deux reconstructions.
 const overrides=path.join(root,'data','overrides.json');if(fs.existsSync(overrides)){const o=JSON.parse(fs.readFileSync(overrides,'utf8'));for(const p of products)Object.assign(p,o[p.id]||{});}
 fs.mkdirSync(path.join(root,'public','data'),{recursive:true});

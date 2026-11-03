@@ -1,11 +1,16 @@
 // Logique pure partagée avec les tests. Aucun classement ou avis fictif.
+import {isArchived,isOffer} from './availability.js';
 export const brands = {mcdonalds:'McDonald’s',burgerking:'Burger King',quick:'Quick',kfc:'KFC'};
 export function escapeHtml(value='') { return String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-export function filterProducts(products, state, ratings={}) {
+export function filterProducts(products, state, ratings={}, now=new Date()) {
   const query=(state.query||'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
   const result=products.filter(p=>{
-    const text=[p.name,p.description,brands[p.brand],p.category].join(' ').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
-    return (state.brand==='all'||p.brand===state.brand)&&(state.category==='all'||p.category===state.category)&&(!state.onlyNew||p.isNew)&&(!state.onlyFavorites||state.favorites.includes(p.id))&&text.includes(query);
+    const text=[p.name,p.description,brands[p.brand],p.category,...(p.searchTerms||[])].join(' ').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
+    const archived=isArchived(p,now),mode=state.mode||'carte';
+    const modeOK=mode==='souvenirs'?archived:mode==='offres'?!archived&&isOffer(p):!archived;
+    const dayOK=!state.day||state.day==='all'||!p.schedule?.weekdays?.length||p.schedule.weekdays.includes(Number(state.day));
+    const yearOK=!state.year||state.year==='all'||Number(p.editionYear)===Number(state.year);
+    return modeOK&&dayOK&&yearOK&&(state.brand==='all'||p.brand===state.brand)&&(state.category==='all'||p.category===state.category)&&(!state.onlyNew||p.isNew)&&(!state.onlyFavorites||state.favorites.includes(p.id))&&text.includes(query);
   });
   return result.sort((a,b)=>{
     if(state.sort==='name') return a.name.localeCompare(b.name,'fr');

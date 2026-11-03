@@ -2,6 +2,18 @@
 
 Guide indépendant des cartes françaises de McDonald's, Burger King, Quick et KFC. Interface responsive en français, photos officielles, nouveautés, recherche, filtres, favoris, fiches, allergènes, nutrition et avis étoilés.
 
+Site publié : https://randomiii.github.io/croq/ · Dépôt : https://github.com/RandomIII/croq
+
+## Offres et souvenirs
+
+Le calendrier présente les offres récurrentes selon le jour et les horaires de Paris : Crazy mardi / Tuesday Deal de KFC, Mercredeal et Poulet du dimanche de Burger King. Les prix promotionnels sont accompagnés de leurs conditions. La carte, les offres et les souvenirs ont des collections distinctes.
+
+Le catalogue contient 518 fiches, dont une première sélection de 9 anciennes éditions. Les dates documentées sont affichées ; les dates de fin inconnues ne sont pas inventées. Un tarif historique est étiqueté comme tel. Chaque édition possède son identifiant pour conserver ses avis, y compris après son archivage. Les allergènes d'une ancienne recette ne sont jamais déduits de la version actuelle.
+
+Les entrées éditoriales et les menus supplémentaires sont dans `data/editions.json`. `tools/prepare-editions.mjs` reproduit leur préparation à partir des relevés locaux, puis `tools/build-catalogue.mjs` les intègre et génère `supabase/seed.sql`. Les archives antérieures sont conservées lors d'une reconstruction. Ne pas renommer leurs identifiants ni supprimer les anciennes lignes SQL. Après ajout, exécuter le seed idempotent dans Supabase avant de publier, afin que les nouvelles fiches acceptent les avis.
+
+Les périodes explicites expirent automatiquement dans l'interface après leur dernier jour inclus. Une disparition d'un import ne suffit pas à prouver un retrait : les autres changements de statut demandent une vérification éditoriale. L'historique n'est pas exhaustif et il n'y a pas de suivi des stocks en temps réel. Un visuel éditorial clairement étiqueté remplace les photographies non documentées.
+
 Projet autonome : le programme AI File Organizer n'est pas utilisé ou modifié. **Pour GitHub, publier uniquement le contenu de ce dossier `croq` dans un nouveau dépôt.** Ne pas publier le dépôt parent, qui contient des données personnelles.
 
 ## Lancer l'aperçu

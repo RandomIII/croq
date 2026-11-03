@@ -6,14 +6,14 @@
   <meta name="description" content="Compare les cartes McDonald's, Burger King, Quick et KFC en France. Découvre les nouveautés, les ingrédients et les avis de la communauté.">
   <title>Croq. Le goût mérite ton avis.</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./refinements.css">
+  <link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./refinements.css"><link rel="stylesheet" href="./editions.css">
   <script src="./config.js"></script><script type="module" src="./app.js"></script>
 </head>
 <body>
   <div class="topline">LES GRANDES ENSEIGNES. LES VRAIS AVIS. <span>100 % indépendant ✳</span></div>
   <header class="header wrap">
     <a class="logo" href="#" aria-label="Croq, accueil">croq<span>✳</span></a>
-    <nav aria-label="Navigation principale"><a href="#catalogue" class="nav-active">La carte</a><a href="#nouveautes">Nouveautés <span class="dot"></span></a><a href="#catalogue" id="ranking-link">Le classement ↗</a></nav>
+    <nav aria-label="Navigation principale"><a href="#catalogue" data-mode="carte" class="nav-active">La carte</a><a href="#rendez-vous">Les rendez-vous</a><a href="#catalogue" data-mode="souvenirs">Les souvenirs</a><a href="#catalogue" id="ranking-link">Le classement ↗</a></nav>
     <button class="login" id="login">◉ <span>Connexion Discord</span></button>
   </header>
   <main>
@@ -31,8 +31,18 @@
       <div class="section-heading"><div><div class="eyebrow">LA CARTE BOUGE, NOUS AUSSI</div><h2>Ça vient de sortir<span>✳</span></h2></div><button class="text-button" id="show-new">Toutes les nouveautés ↗</button></div>
       <div class="news-grid" id="news-grid"></div>
     </section>
+    <section class="weekly-section wrap" id="rendez-vous">
+      <div class="section-heading"><div><div class="eyebrow">CHAQUE JOUR A SES PETITS PLANS</div><h2>On mange quoi, <em>mardi ?</em></h2></div><span class="calendar-caption">Les horaires sont ceux de Paris</span></div>
+      <div class="week-days" id="week-days" role="group" aria-label="Choisir le jour des offres"></div>
+      <div id="weekly-offers" class="weekly-offers" aria-live="polite"></div>
+      <p class="calendar-note">Un rendez-vous annoncé ne garantit pas le stock. Conditions, coupons et restaurants participants dans chaque fiche.</p>
+    </section>
+    <section class="memory-section wrap" aria-labelledby="memory-title"><div class="memory-stamp" aria-hidden="true">CROQ<br><b>ARCHIVES</b><br>DEPUIS 2017</div><div><div class="eyebrow">LES RECETTES PASSENT. LES SOUVENIRS RESTENT.</div><h2 id="memory-title">Tu te souviens<br>de <em>celui-là ?</em></h2><p>Une collab culte, une recette disparue, une promo de l’époque.<br>Retrouve leurs fiches et raconte ton souvenir.</p><a href="#catalogue" data-mode="souvenirs" class="primary">Ouvrir la boîte à souvenirs ↗</a></div><div class="memory-ticket" aria-hidden="true"><span>ÉDITION COLLECTOR</span><b>UN GOÛT<br>DE DÉJÀ-VU.</b><small>Les avis restent.<br>Même quand la recette s’en va.</small><span>✳ CROQ, TU TE RAPPELLES ?</span></div></section>
     <section class="catalogue wrap" id="catalogue">
       <div class="section-heading"><div><div class="eyebrow">LE PLUS DUR, C’EST DE CHOISIR</div><h2>Une faim. Quatre possibilités.</h2></div><span class="france">🇫🇷 Les cartes françaises</span></div>
+      <div class="catalogue-modes" role="group" aria-label="Choisir la collection"><button data-mode="carte" class="active">À la carte <span id="count-carte"></span></button><button data-mode="offres">Offres & éditions <span id="count-offres"></span></button><button data-mode="souvenirs">La boîte à souvenirs <span id="count-souvenirs"></span></button></div>
+      <div class="collection-context" id="collection-context"></div>
+      <div class="temporal-filters" id="temporal-filters"></div>
       <div class="brands" role="group" aria-label="Filtrer par enseigne">
         <button data-brand="all" class="selected"><span class="brand-symbol all">✳</span>Toutes les enseignes <span id="all-count"></span></button>
         <button data-brand="mcdonalds"><span class="brand-symbol mc">M</span>McDonald’s</button>
@@ -41,8 +51,8 @@
         <button data-brand="kfc"><span class="brand-symbol kfc">KFC</span>KFC</button>
       </div>
       <div class="filterbar"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Un Big Mac, des tenders, un petit plaisir…" aria-label="Chercher un produit"></label><label class="sort-label">Trier par <select id="sort"><option value="selection">Notre sélection</option><option value="rating">Les mieux notés</option><option value="reviews">Les plus commentés</option><option value="price">Prix croissant</option><option value="name">Nom de A à Z</option></select></label></div>
-      <div class="category-row"><div class="categories" role="group" aria-label="Catégorie"><button class="active" data-category="all">Tout voir</button><button data-category="Burgers">Burgers</button><button data-category="Poulet">Poulet & buckets</button><button data-category="Accompagnements">À grignoter</button><button data-category="Desserts">Desserts</button><button data-category="Boissons">Boissons</button></div><button class="favorite-filter" id="favorites-filter" aria-pressed="false">♡ Mes favoris</button></div>
-      <p class="catalogue-note">Cartes relevées le 3 novembre 2026. * Prix indicatifs du catalogue Quick, restaurant non précisé. Fiches détaillées en cours d’enrichissement.</p>
+      <div class="category-row"><div class="categories" role="group" aria-label="Catégorie"><button class="active" data-category="all">Tout voir</button><button data-category="Menus">Menus</button><button data-category="Burgers">Burgers</button><button data-category="Poulet">Poulet & buckets</button><button data-category="Wraps & salades">Wraps & salades</button><button data-category="Accompagnements">À grignoter</button><button data-category="Desserts">Desserts</button><button data-category="Boissons">Boissons</button></div><button class="favorite-filter" id="favorites-filter" aria-pressed="false">♡ Mes favoris</button></div>
+      <p class="catalogue-note">Relevé du 3 novembre 2026. Archives et offres enrichies à partir de sources datées. * Prix indicatifs Quick, restaurant non précisé. L’historique reste partiel.</p>
       <div class="active-filters" id="active-filters" aria-label="Filtres supplémentaires" hidden></div>
       <div class="results-line"><span id="results-count" aria-live="polite"></span><span>Prix et disponibilité selon le restaurant <button class="info-button" id="price-info" aria-label="Comprendre les prix">i</button></span></div>
       <div class="product-grid" id="product-grid" aria-busy="true"></div><div id="load-more-wrap"><button class="outline" id="load-more">Encore un peu de gourmandise ↓</button></div>
