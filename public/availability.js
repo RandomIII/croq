@@ -17,6 +17,7 @@ export function scheduleLabel(p) {
 }
 export function availability(p,now=new Date()) {
  const clock=parisClock(now),t=p.temporal||{};
+ if(isArchived(p,now)&&t.certainty==='unconfirmed')return {kind:'archive-unverified',label:'À dater',detail:t.archiveNote};
  if(isArchived(p,now))return {kind:'archived',label:'Édition archivée',detail:t.archiveNote||'Cette édition est conservée pour les souvenirs. Elle ne fait pas partie de la carte du moment.'};
  if(t.startsOn&&t.startsOn>clock.date)return {kind:'upcoming',label:'À venir',detail:`Début annoncé le ${dateLabel(t.startsOn)}.`};
  if(p.schedule){
@@ -31,6 +32,7 @@ export function availability(p,now=new Date()) {
 export function dateLabel(value){return new Date(value+'T12:00:00Z').toLocaleDateString('fr-FR',{timeZone:'Europe/Paris'});}
 export function periodLabel(p) {
  const t=p.temporal||{};
+ if(t.certainty==='unconfirmed')return 'Période inconnue'+(p.sourceReference?' · réf. '+p.sourceReference.slice(-6):'');
  if(t.startsOn&&t.endsOn)return `Du ${dateLabel(t.startsOn)} au ${dateLabel(t.endsOn)}`;
  return t.periodLabel||(t.startsOn?`Depuis le ${dateLabel(t.startsOn)}`:p.editionYear?`Édition ${p.editionYear}`:'Période non documentée');
 }

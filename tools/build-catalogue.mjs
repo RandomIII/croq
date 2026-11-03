@@ -31,30 +31,10 @@ if(exists('mcdonalds-browser.json')){
   products.push({...base,...p,name,id:'mc-'+key.normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/[^a-z0-9]+/g,'-').replace(/-$/,''),brand:'mcdonalds',category,description:p.description||'',descriptionType:'official',order:160});
  }
 }
-if(exists('bk-catalog.json')){
- const bk=read('bk-catalog.json');
- const labels={'product.nutritional.energy':'Énergie','product.nutritional.fat':'Lipides','product.nutritional.saturates':'Acides gras saturés','product.nutritional.protein':'Protéines','product.nutritional.carbs':'Glucides','product.nutritional.sugars':'Sucres','product.nutritional.salt':'Sel'};
- const reached=new Map();
- function visit(id,category,isNew=false,seen=new Set()){
-  if(seen.has(id))return;seen.add(id);
-  const c=bk.categories[id];if(!c?.items)return;
-  for(const [key,type] of Object.entries(c.items)){
-   if(type==='CATEGORY')visit(key,category,isNew,seen);
-   if(type==='PRODUCT'&&bk.products[key]){const prior=reached.get(key);reached.set(key,{category:prior?.category||category,isNew:isNew||prior?.isNew||false});}
-  }
- }
- for(const c of Object.values(bk.categories).filter(c=>c.inHeaders)){
-  let category=c.routeId==='burgers'?'Burgers':c.routeId==='desserts-boissons'?'Desserts':c.routeId==='wrap'?'Wraps & salades':c.routeId==='salade'?'Wraps & salades':'Accompagnements';
-  if(!['nouveautes','menus','menus-enfants','bon-et-pas-cher','poulet-du-dimanche'].includes(c.routeId)&&c.routeId)visit(c.id,category);
- }
- const novelty=Object.values(bk.categories).find(x=>x.routeId==='nouveautes');if(novelty)visit(novelty.id,'Burgers',true);
- const featured=['Whopper®','Big King®','Steakhouse','Master Raclette Poivre'];
- for(const [id,meta]of reached){
-  const p=bk.products[id];if(!p.image||!p.routeId)continue;
-  let category=meta.category;if(p.type==='DRINK'||/^(coca|fanta|sprite|fuzetea|vittel|perrier|café|cafe|expresso|espresso|thé|capri|minute maid|lipton|oasis)/i.test(p.name))category='Boissons';
-  products.push({...base,id:'bk-'+id,brand:'burgerking',category,name:clean(p.name),description:clean(p.description),descriptionType:'official',image:p.image+'?w=600&org_if_sml=1',source:'https://www.burgerking.fr/carte',allergens:p.displayAllergens?(p.allergens||[]).map(x=>bk.allergens[x]?.name).filter(Boolean):null,traces:(p.traces||[]).map(x=>bk.allergens[x]?.name).filter(Boolean),ingredients:[...new Set((p.ingredients||[]).map(x=>clean(x.name)))],nutrition:p.displayNutrition?(p.nutrition||[]).map(n=>({label:labels[n.item]||n.item,value:n.portion,unit:n.unit})):[],isNew:meta.isNew||/Master.*Raclette/i.test(p.name),order:p.name==='Whopper®'?2:p.name==='Big King®'?10:featured.includes(p.name)?6:60});
- }
-}
+// Collecte BK complète : rayons, campagnes et références historiques à dater.
+const generatedBK=path.join(root,'data','bk-generated.json');
+if(!fs.existsSync(generatedBK))throw new Error('Lance npm run refresh:bk avant de reconstruire le catalogue.');
+products.push(...JSON.parse(fs.readFileSync(generatedBK,'utf8')));
 const quickAllergen='https://assets.quick.fr/BAT_Allergenes_Quick_TF_10_Anim9_MAJ_27_10_2026_253ebb2973.pdf';
 const quickCategories={burgers:'Burgers','finger-food':'Accompagnements',frites:'Accompagnements',desserts:'Desserts','boissons-froides':'Boissons',salades:'Wraps & salades'};
 let quickMenus=[];

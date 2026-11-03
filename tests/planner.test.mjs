@@ -9,7 +9,7 @@ test('Le planning associe chaque jour aux vrais menus et sépare les rendez-vous
  assert.equal(week.days[1].groups[0].title,'Crazy mardi');assert.equal(week.days[1].groups[0].products.length,3);
  assert.equal(week.days[2].groups[0].title,'Mercredeal');assert.equal(week.days[2].groups[0].products.length,2);
  assert.equal(week.days[6].groups[0].title,'Poulet du dimanche');assert.equal(week.days[6].groups[0].products.length,3);
- assert.equal(week.everyday.length,1);assert.equal(week.everyday[0].id,'bk-baby-churros-2026');
+ assert.ok(week.everyday.some(p=>p.id==='bk-baby-churros-2026'));assert.ok(week.everyday.every(p=>p.schedule.weekdays.length===7));
  assert.ok(week.days.filter(d=>[1,4,5,6].includes(d.weekday)).every(d=>d.groups.length===0));
 });
 test('Une offre bornée ne déborde pas sur une autre date et les archives restent exclues',()=>{

@@ -1,0 +1,266 @@
+{
+  "checkedAt": "2026-11-03",
+  "sources": [
+    {
+      "url": "https://www.burgerking.fr/",
+      "bytes": 499071
+    },
+    {
+      "url": "https://www.burgerking.fr/carte",
+      "bytes": 1736818
+    },
+    {
+      "url": "https://www.burgerking.fr/page/box-mystere",
+      "bytes": 423243
+    },
+    {
+      "url": "https://www.burgerking.fr/page/reglement-box-mystere",
+      "bytes": 156054
+    },
+    {
+      "url": "https://www.burgerking.fr/page/raclette-party",
+      "bytes": 159013
+    },
+    {
+      "url": "https://www.burgerking.fr/page/fc-27",
+      "bytes": 176167
+    },
+    {
+      "url": "https://www.burgerking.fr/page/coin-famille",
+      "bytes": 180621
+    },
+    {
+      "url": "https://www.burgerking.fr/page/programme-de-fidelite-kingdom",
+      "bytes": 150759
+    },
+    {
+      "url": "https://www.burgerking.fr/page/offre-etudiante",
+      "bytes": 127595
+    },
+    {
+      "url": "https://www.burgerking.fr/page/bons-plans",
+      "bytes": 123953
+    },
+    {
+      "url": "https://www.burgerking.fr/page/bons-plans-livraison",
+      "bytes": 123652
+    },
+    {
+      "url": "https://www.burgerking.fr/page/menu-bpc",
+      "bytes": 169292
+    },
+    {
+      "url": "https://www.burgerking.fr/page/commander-chez-bk",
+      "bytes": 206754
+    },
+    {
+      "url": "https://www.burgerking.fr/page/applications-burger-king-france",
+      "bytes": 112518
+    },
+    {
+      "url": "https://www.burgerking.fr/page/mercredeal-famille",
+      "bytes": 176618
+    }
+  ],
+  "campaigns": [
+    {
+      "url": "https://www.burgerking.fr/page/box-mystere",
+      "references": [
+        {
+          "kind": "MENU",
+          "id": "9215885467303247332"
+        }
+      ],
+      "period": {
+        "startsOn": "2026-11-03",
+        "endsOn": "2026-11-23"
+      },
+      "termsUrl": "https://www.burgerking.fr/page/reglement-box-mystere",
+      "promoted": true
+    },
+    {
+      "url": "https://www.burgerking.fr/page/raclette-party",
+      "references": [
+        {
+          "kind": "PRODUCT",
+          "id": "4882464297317581804"
+        },
+        {
+          "kind": "PRODUCT",
+          "id": "9222299297630367825"
+        },
+        {
+          "kind": "PRODUCT",
+          "id": "9222299297630367826"
+        },
+        {
+          "kind": "PRODUCT",
+          "id": "7494777081947996766"
+        },
+        {
+          "kind": "PRODUCT",
+          "id": "9222299297630367824"
+        },
+        {
+          "kind": "PRODUCT",
+          "id": "6863335941375327245"
+        }
+      ],
+      "period": null,
+      "termsUrl": null,
+      "promoted": true
+    },
+    {
+      "url": "https://www.burgerking.fr/page/fc-27",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/coin-famille",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/programme-de-fidelite-kingdom",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/offre-etudiante",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/bons-plans",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/bons-plans-livraison",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/menu-bpc",
+      "references": [
+        {
+          "kind": "PRODUCT",
+          "id": "4861790023638157412"
+        },
+        {
+          "kind": "PRODUCT",
+          "id": "4666271225618586047"
+        },
+        {
+          "kind": "PRODUCT",
+          "id": "5145156172345983104"
+        },
+        {
+          "kind": "MENU",
+          "id": "8039964431650146103"
+        },
+        {
+          "kind": "MENU",
+          "id": "9105006888863022447"
+        },
+        {
+          "kind": "MENU",
+          "id": "6848883999430202358"
+        }
+      ],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/commander-chez-bk",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/applications-burger-king-france",
+      "references": [],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    },
+    {
+      "url": "https://www.burgerking.fr/page/mercredeal-famille",
+      "references": [
+        {
+          "kind": "MENU",
+          "id": "7670826442505977626"
+        },
+        {
+          "kind": "MENU",
+          "id": "7763259670376236037"
+        }
+      ],
+      "period": null,
+      "termsUrl": null,
+      "promoted": false
+    }
+  ],
+  "coverage": {
+    "PRODUCT": {
+      "total": 598,
+      "current": 136,
+      "unconfirmed": 462,
+      "datedArchive": 0
+    },
+    "MENU": {
+      "total": 356,
+      "current": 54,
+      "unconfirmed": 302,
+      "datedArchive": 0
+    }
+  },
+  "warnings": [
+    {
+      "url": "https://www.burgerking.fr/page/fc-27",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    },
+    {
+      "url": "https://www.burgerking.fr/page/coin-famille",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    },
+    {
+      "url": "https://www.burgerking.fr/page/programme-de-fidelite-kingdom",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    },
+    {
+      "url": "https://www.burgerking.fr/page/offre-etudiante",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    },
+    {
+      "url": "https://www.burgerking.fr/page/bons-plans",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    },
+    {
+      "url": "https://www.burgerking.fr/page/bons-plans-livraison",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    },
+    {
+      "url": "https://www.burgerking.fr/page/commander-chez-bk",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    },
+    {
+      "url": "https://www.burgerking.fr/page/applications-burger-king-france",
+      "reason": "Campagne découverte sans référence produit identifiable automatiquement."
+    }
+  ]
+}

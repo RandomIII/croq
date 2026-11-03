@@ -4,13 +4,13 @@ Vérification locale du 3 novembre 2026.
 
 ## Réussi
 
-- Vingt tests Node : catalogue, filtres, tri, validation et échappement des avis ; calendrier Europe/Paris, changement de jour en été/hiver, fins inclusives, horaires, filtres année/jour et recherche Crazy mardi ; renouvellement de toute la chaîne JS/JSON ; association jours/menus dans le planning, périodes bornées et semaines à cheval sur deux mois.
+- Vingt-six tests Node, dont six contrôles de l'import BK : lecture des blocs Flight, découverte de campagnes hors rayon, formules des nouveautés, périodes et prix sourcés, conservation des références et des données des autres enseignes, arrêt en cas de campagne principale omise.
 - Planning vérifié dans le navigateur : sept colonnes, menus et photos associés, ouverture des fiches KFC et Mercredeal, défilement horizontal à 390 pixels et retour au jour courant.
 - Vérification syntaxique de l'application, du client Supabase et du serveur de prévisualisation.
 - Vérification dans le navigateur : chargement des photos, recherche Giant, favoris ajoutés puis retirés, prix du Giant seul et en menu avec contexte indicatif, ouverture et fermeture de fiche, onglets recette/allergènes/avis.
 - État explicite lorsque la sauvegarde des avis n'est pas encore configurée. Aucun faux succès de connexion ou publication.
 - Rendu à largeur mobile de 390 pixels dans un iframe de test. Les media queries sont actives, le catalogue passe à deux colonnes et la navigation est adaptée.
-- 518 fiches : 152 McDonald's, 186 Burger King, 61 Quick et 119 KFC. Parmi elles, 9 anciennes éditions documentées. Les 452 identifiants existants sont conservés. Les fiches encore incomplètes sont signalées.
+- 1 291 fiches : 152 McDonald's, 959 Burger King, 61 Quick et 119 KFC. Parmi elles, 9 anciennes éditions documentées et 764 références BK à dater. Les 518 identifiants précédents sont conservés. Les fiches encore incomplètes sont signalées.
 
 ## À vérifier avec les services connectés
 

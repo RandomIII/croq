@@ -10,7 +10,13 @@ Le calendrier présente les offres récurrentes selon le jour et les horaires de
 
 Le planning montre les sept jours de la semaine en colonnes, avec les dates, le jour courant et les menus cliquables dans chaque rendez-vous. Les déclinaisons sont regroupées par `schedule.campaign` et `schedule.campaignTitle`. Les offres quotidiennes apparaissent sous la grille pour éviter de les répéter sept fois. Sur mobile, la grille défile horizontalement et « Voir aujourd'hui » recentre le jour courant. Les dates de début et de fin sont respectées pour chaque case ; les offres archivées ou incertaines restent exclues.
 
-Le catalogue contient 518 fiches, dont une première sélection de 9 anciennes éditions. Les dates documentées sont affichées ; les dates de fin inconnues ne sont pas inventées. Un tarif historique est étiqueté comme tel. Chaque édition possède son identifiant pour conserver ses avis, y compris après son archivage. Les allergènes d'une ancienne recette ne sont jamais déduits de la version actuelle.
+Le catalogue contient 1 291 fiches, incluant 9 anciennes éditions documentées et les références BK à dater. Ce total ne représente pas autant de produits actuellement vendus. Les dates documentées sont affichées ; les dates de fin inconnues ne sont pas inventées. Un tarif historique est étiqueté comme tel. Chaque référence possède son identifiant pour conserver ses avis, y compris après son archivage. Les allergènes d'une ancienne recette ne sont jamais déduits de la version actuelle.
+
+### Collecte Burger King
+
+`npm run refresh:bk` collecte la carte, les campagnes de l'accueil, les bons plans publics et leurs règlements, puis met à jour `public/data/products.json` et `supabase/seed.sql` sans reconstruire les autres enseignes. Aucun ajout spécifique de la Box Mystère n'est codé dans l'import. Les catégories `PRODUCT` et `MENU` sont parcourues ; les références hors rayon sont également conservées. Les 764 références BK dont la période reste inconnue apparaissent dans les souvenirs avec le filtre « À dater ». Une campagne principale non reconnue arrête l'import explicitement.
+
+Le rapport des sources et de la couverture se trouve dans `data/bk-import-report.json`. Le détail du défaut corrigé et des limites de la collecte est dans [l'audit BK](docs/BK_IMPORT_AUDIT.md). La commande constitue un rafraîchissement à la demande ; elle ne tourne pas automatiquement en continu.
 
 Les entrées éditoriales et les menus supplémentaires sont dans `data/editions.json`. `tools/prepare-editions.mjs` reproduit leur préparation à partir des relevés locaux, puis `tools/build-catalogue.mjs` les intègre et génère `supabase/seed.sql`. Les archives antérieures sont conservées lors d'une reconstruction. Ne pas renommer leurs identifiants ni supprimer les anciennes lignes SQL. Après ajout, exécuter le seed idempotent dans Supabase avant de publier, afin que les nouvelles fiches acceptent les avis.
 

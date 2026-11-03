@@ -9,7 +9,7 @@ export function filterProducts(products, state, ratings={}, now=new Date()) {
     const archived=isArchived(p,now),mode=state.mode||'carte';
     const modeOK=mode==='souvenirs'?archived:mode==='offres'?!archived&&isOffer(p):!archived;
     const dayOK=!state.day||state.day==='all'||!p.schedule?.weekdays?.length||p.schedule.weekdays.includes(Number(state.day));
-    const yearOK=!state.year||state.year==='all'||Number(p.editionYear)===Number(state.year);
+    const yearOK=!state.year||state.year==='all'||(state.year==='unknown'?!p.editionYear:Number(p.editionYear)===Number(state.year));
     return modeOK&&dayOK&&yearOK&&(state.brand==='all'||p.brand===state.brand)&&(state.category==='all'||p.category===state.category)&&(!state.onlyNew||p.isNew)&&(!state.onlyFavorites||state.favorites.includes(p.id))&&text.includes(query);
   });
   return result.sort((a,b)=>{
