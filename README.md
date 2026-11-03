@@ -1,0 +1,91 @@
+# Croq
+
+Guide indépendant des cartes françaises de McDonald's, Burger King, Quick et KFC. Interface responsive en français, photos officielles, nouveautés, recherche, filtres, favoris, fiches, allergènes, nutrition et avis étoilés.
+
+Projet autonome : le programme AI File Organizer n'est pas utilisé ou modifié. **Pour GitHub, publier uniquement le contenu de ce dossier `croq` dans un nouveau dépôt.** Ne pas publier le dépôt parent, qui contient des données personnelles.
+
+## Lancer l'aperçu
+
+Node.js 24, aucune installation de dépendances :
+
+```powershell
+cd croq
+npm run dev
+```
+
+Ouvre http://localhost:5088. Ne pas ouvrir `index.html` directement : le catalogue utilise `fetch`.
+
+```powershell
+npm test
+```
+
+## Ce qui fonctionne et ce qui attend la configuration
+
+- Le catalogue, les photos, les nouveautés, la recherche et les filtres fonctionnent immédiatement.
+- Les favoris sont conservés dans le navigateur. Ils ne sont pas synchronisés avec Discord.
+- Les avis sont **partagés et persistants dans Supabase**, jamais simulés ou enregistrés seulement en local. Leur publication attend un projet Supabase configuré.
+- Le code gère la connexion Discord, la modification d'un avis par produit, la suppression d'avis, les signalements, la déconnexion et la suppression du compte.
+- Aucune note, aucun nombre d'utilisateurs et aucun avis fictif ne sont préremplis.
+
+## Activer Discord et les avis
+
+1. Créer un projet sur https://supabase.com/dashboard.
+2. Exécuter `supabase/schema.sql`, puis `supabase/seed.sql` dans le SQL Editor. Le schéma est prévu pour un **nouveau** projet, pas pour être réexécuté sur une base existante.
+3. Dans https://discord.com/developers/applications, créer une application. Dans OAuth2, ajouter la redirection `https://TON-PROJET.supabase.co/auth/v1/callback`.
+4. Dans Supabase, Authentication > Sign In / Providers > Discord, activer Discord et renseigner son Client ID et son Client Secret. **Le secret Discord reste exclusivement dans Supabase.** Désactiver les autres méthodes de connexion si elles sont actives et non souhaitées.
+5. Dans Authentication > URL Configuration, définir Site URL sur `https://TON-COMPTE.github.io/TON-DEPOT/` et autoriser cette URL ainsi que `http://localhost:5088/` dans Redirect URLs.
+6. Pour l'aperçu local, renseigner `public/config.js` avec Project URL et la clé **publishable** ou **anon**. Ne jamais utiliser une clé service_role ou `sb_secret_`.
+
+Documentation officielle : https://supabase.com/docs/guides/auth/social-sign-in/auth-discord.
+
+### Sécurité des données
+
+La base active RLS. Lecture publique des avis et noms d'affichage, écriture réservée au propriétaire authentifié, unicité compte/produit, contraintes de longueur et de note, limite de 30 secondes entre deux écritures. Les produits doivent exister dans la table `products` : impossible de créer un avis sur un identifiant arbitraire.
+
+Les signalements sont privés et consultables par l'administrateur dans Supabase > Table Editor > reports. La modération est manuelle : supprimer un avis contraire aux règles dans la table reviews. Ne pas ouvrir les droits d'écriture aux visiteurs anonymes. Activer les protections anti-abus disponibles dans le tableau de bord Auth avant une ouverture à grande audience.
+
+**Validation externe restante :** le parcours OAuth réel, les écritures multi-utilisateurs et les politiques SQL doivent être vérifiés avec ton projet Supabase. Ils ne sont pas testables sans accès à ce service.
+
+## Déployer sur GitHub Pages
+
+1. Créer un nouveau dépôt pour Croq et y placer le **contenu** de ce dossier, y compris `.github/`, à la racine. Aucun fichier du projet parent n'est nécessaire.
+2. Settings > Pages > Build and deployment > Source : **GitHub Actions**.
+3. La configuration publique de `public/config.js` est déjà utilisée par le déploiement. Pour la remplacer, Settings > Secrets and variables > Actions > Variables : ajouter `SUPABASE_URL` et `SUPABASE_ANON_KEY` (valeurs publiques destinées au navigateur).
+4. Pousser sur la branche `main` ou lancer le workflow « Publier Croq sur GitHub Pages ».
+5. Reporter l'URL finale dans la configuration Supabase ci-dessus.
+
+Le workflow teste le catalogue et génère `config.js` à partir des variables. Il refuse de publier sans configuration Supabase ou avec une clé secrète reconnue. Aucun abonnement serveur Node n'est nécessaire : GitHub Pages sert `public/`, Supabase gère la base et OAuth.
+
+Documentation : https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages.
+
+## Produits et tarifs
+
+Les données proviennent des cartes officielles relevées le **3 novembre 2026**. `public/data/products.json` est autonome et contient la provenance et la date de chaque fiche. Les photos sont servies depuis les domaines officiels, avec remplacement local si elles deviennent indisponibles.
+
+Le catalogue initial n'est pas une garantie de disponibilité dans tous les restaurants. Certaines descriptions, listes d'allergènes et valeurs nutritionnelles restent à relever et sont explicitement signalées. Une liste d'allergènes `null` signifie **non vérifiée**, jamais « aucun allergène ». La recette seule et le menu n'ont pas forcément les mêmes allergènes. Les données Burger King importées concernent le produit seul.
+
+Les prix n'ont pas de tarif national unique. Les tarifs du catalogue public Quick sont affichés avec un astérisque comme **indicatifs**, avec canal, source et date de relevé. Le restaurant n'est pas précisé par cette source : la note de la fiche le dit explicitement. Le menu relevé est de taille M. Les autres prix restent « À vérifier » lorsqu'aucun montant fiable n'a été relevé.
+
+Pour ajouter un prix dans une fiche :
+
+```json
+"price": {
+  "solo": 6.5,
+  "menu": 10.5,
+  "restaurant": "Nom exact du restaurant",
+  "channel": "Sur place",
+  "source": "https://url-de-la-carte-du-restaurant",
+  "checkedAt": "2026-11-03",
+  "note": "Relevé sur place dans ce restaurant le 03/11/2026. Autres restaurants : tarifs variables."
+}
+```
+
+Cet exemple montre le format, **pas un tarif réel**. Le site affiche les deux montants et la note de contexte sur la fiche.
+
+Les scripts `tools/inspect-sources.ps1`, `tools/fetch-quick.ps1` et `tools/extract-bk.cjs` aident à préparer un relevé. Ils ne contournent pas les restrictions des enseignes. Les exports temporaires sont ignorés par Git dans `research/`. Le script `tools/build-catalogue.mjs` normalise ces relevés en JSON et génère les produits autorisés pour la base. Ne pas le lancer sans les exports sources : il reconstruirait un catalogue partiel.
+
+Les enrichissements manuels peuvent être conservés dans `data/overrides.json`, indexés par identifiant produit. Aucun rafraîchissement automatique ou contrôle des stocks en temps réel n'est revendiqué.
+
+## Avant une ouverture publique
+
+Renseigner l'identité et le contact de l'exploitant et sa politique de confidentialité dans « À propos & données ». Organiser le traitement des signalements, vérifier les droits d'utilisation des photos et compléter les données manquantes. Les marques et les visuels appartiennent aux enseignes concernées.

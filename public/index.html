@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ef3828">
+  <meta name="description" content="Compare les cartes McDonald's, Burger King, Quick et KFC en France. Découvre les nouveautés, les ingrédients et les avis de la communauté.">
+  <title>Croq. Le goût mérite ton avis.</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./refinements.css">
+  <script src="./config.js"></script><script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="topline">LES GRANDES ENSEIGNES. LES VRAIS AVIS. <span>100 % indépendant ✳</span></div>
+  <header class="header wrap">
+    <a class="logo" href="#" aria-label="Croq, accueil">croq<span>✳</span></a>
+    <nav aria-label="Navigation principale"><a href="#catalogue" class="nav-active">La carte</a><a href="#nouveautes">Nouveautés <span class="dot"></span></a><a href="#catalogue" id="ranking-link">Le classement ↗</a></nav>
+    <button class="login" id="login">◉ <span>Connexion Discord</span></button>
+  </header>
+  <main>
+    <section class="hero wrap">
+      <div class="hero-copy"><div class="eyebrow"><span class="tiny-star">✳</span> LE RENDEZ-VOUS DES VRAIS GOURMANDS</div>
+        <h1>Le goût mérite<br>ton <em>avis.</em><span class="scribble">↗</span></h1>
+        <p>Le prochain burger qui va te mettre d’accord ?<br>Découvre les cartes, compare et raconte-nous.</p>
+        <a class="primary" href="#catalogue">Je trouve mon prochain coup de cœur <span>↗</span></a>
+        <div class="hero-meta"><span class="mini-avatars"><i>L</i><i>M</i><i>A</i></span><span>Ta prochaine découverte commence ici.<br><b>4 enseignes. Une seule carte.</b></span></div>
+      </div>
+      <div class="hero-art"><div class="hero-circle"></div><div class="hero-dots"></div><span class="hero-caption">À CROQUER<br>SANS HÉSITER</span><img id="hero-image" alt="Le Beef Beaufort de McDonald's" fetchpriority="high"><div class="floating-note"><span>LE GOÛT, ÇA SE PARTAGE</span><b>À toi de trancher ★</b></div><span class="art-spark">✳</span><span class="art-arrow">⤵</span></div>
+    </section>
+    <div class="ticker" aria-hidden="true"><div>UN PEU, BEAUCOUP, À LA FOLIE. ✳ TESTE. NOTE. RECOMMENCE. ✳ LE MEILLEUR JURY, C’EST TOI. ✳ UN PEU, BEAUCOUP, À LA FOLIE. ✳</div></div>
+    <section class="new-section wrap" id="nouveautes">
+      <div class="section-heading"><div><div class="eyebrow">LA CARTE BOUGE, NOUS AUSSI</div><h2>Ça vient de sortir<span>✳</span></h2></div><button class="text-button" id="show-new">Toutes les nouveautés ↗</button></div>
+      <div class="news-grid" id="news-grid"></div>
+    </section>
+    <section class="catalogue wrap" id="catalogue">
+      <div class="section-heading"><div><div class="eyebrow">LE PLUS DUR, C’EST DE CHOISIR</div><h2>Une faim. Quatre possibilités.</h2></div><span class="france">🇫🇷 Les cartes françaises</span></div>
+      <div class="brands" role="group" aria-label="Filtrer par enseigne">
+        <button data-brand="all" class="selected"><span class="brand-symbol all">✳</span>Toutes les enseignes <span id="all-count"></span></button>
+        <button data-brand="mcdonalds"><span class="brand-symbol mc">M</span>McDonald’s</button>
+        <button data-brand="burgerking"><span class="brand-symbol bk">BURGER<br>KING</span>Burger King</button>
+        <button data-brand="quick"><span class="brand-symbol quick">Q</span>Quick</button>
+        <button data-brand="kfc"><span class="brand-symbol kfc">KFC</span>KFC</button>
+      </div>
+      <div class="filterbar"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Un Big Mac, des tenders, un petit plaisir…" aria-label="Chercher un produit"></label><label class="sort-label">Trier par <select id="sort"><option value="selection">Notre sélection</option><option value="rating">Les mieux notés</option><option value="reviews">Les plus commentés</option><option value="price">Prix croissant</option><option value="name">Nom de A à Z</option></select></label></div>
+      <div class="category-row"><div class="categories" role="group" aria-label="Catégorie"><button class="active" data-category="all">Tout voir</button><button data-category="Burgers">Burgers</button><button data-category="Poulet">Poulet & buckets</button><button data-category="Accompagnements">À grignoter</button><button data-category="Desserts">Desserts</button><button data-category="Boissons">Boissons</button></div><button class="favorite-filter" id="favorites-filter" aria-pressed="false">♡ Mes favoris</button></div>
+      <p class="catalogue-note">Cartes relevées le 3 novembre 2026. * Prix indicatifs du catalogue Quick, restaurant non précisé. Fiches détaillées en cours d’enrichissement.</p>
+      <div class="active-filters" id="active-filters" aria-label="Filtres supplémentaires" hidden></div>
+      <div class="results-line"><span id="results-count" aria-live="polite"></span><span>Prix et disponibilité selon le restaurant <button class="info-button" id="price-info" aria-label="Comprendre les prix">i</button></span></div>
+      <div class="product-grid" id="product-grid" aria-busy="true"></div><div id="load-more-wrap"><button class="outline" id="load-more">Encore un peu de gourmandise ↓</button></div>
+    </section>
+    <section class="community wrap"><span class="community-star">✳</span><div><div class="eyebrow">TON AVIS A DU GOÛT</div><h2>On a tous un burger<br>à défendre.</h2><p>Une étoile ou cinq ? Partage ton expérience.<br>Les prochains gourmands te remercieront.</p></div><button class="primary light" id="join">Rejoindre avec Discord ↗</button></section>
+  </main>
+  <footer class="wrap"><div class="footer-top"><a class="logo" href="#">croq<span>✳</span></a><p>Les grandes enseignes.<br>Les vrais avis. Les bonnes découvertes.</p><button class="text-button" id="about">À propos & données</button><a href="#catalogue">Retour à la carte ↑</a></div><div class="footer-bottom"><span>© 2026 Croq. Un projet indépendant, sans affiliation aux enseignes.</span><span>Fait pour les goûts, même les plus discutables. ♡</span></div></footer>
+  <dialog id="product-dialog" aria-labelledby="product-title"><button class="close-dialog" id="close-product" aria-label="Fermer la fiche">✕</button><div id="product-detail"></div></dialog>
+  <dialog id="info-dialog" aria-labelledby="info-title"><button class="close-dialog" id="close-info" aria-label="Fermer">✕</button><div class="info-content"><h2 id="info-title"></h2><div id="info-body"></div></div></dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <noscript><p>Active JavaScript pour parcourir les produits et les avis.</p></noscript>
+</body></html>

@@ -1,0 +1,5 @@
+research/
+.env*
+!.env.example
+node_modules/
+.publish/
