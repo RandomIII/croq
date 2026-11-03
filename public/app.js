@@ -1,11 +1,11 @@
 import {brands,escapeHtml as e,filterProducts,validateReview,formatPrice} from './catalogue.js';
 import * as api from './backend.js';
-import {availability,isArchived,isOffer,periodLabel,parisClock,WEEKDAYS} from './availability.js';
+import {availability,isArchived,isOffer,periodLabel,WEEKDAYS} from './availability.js';
+import {buildWeek} from './planner.js';
 const $=s=>document.querySelector(s);
 let products=[],ratings={},user=null,activeProduct=null,activeTab='description',reviewStars=0,reviewCache=[],toastTimer;
 function readStorage(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
 const state={mode:'carte',day:'all',year:'all',brand:'all',category:'all',query:'',sort:'selection',onlyNew:false,onlyFavorites:false,favorites:readStorage('croq-favorites',[]),limit:12};
-let calendarDay=parisClock().weekday;
 if(!Array.isArray(state.favorites))state.favorites=[];
 function toast(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),4500);}
 function info(title,html){$('#info-title').textContent=title;$('#info-body').innerHTML=html;$('#info-dialog').showModal();}
@@ -15,11 +15,10 @@ document.addEventListener('error',event=>{if(event.target.tagName==='IMG'&&!even
 function ratingMarkup(p){const r=ratings[p.id];return r?.count?`<span class="stars" aria-hidden="true">${'★'.repeat(Math.round(r.average))}${'☆'.repeat(5-Math.round(r.average))}</span><b>${r.average.toFixed(1).replace('.',',')}</b><span>(${r.count} avis)</span>`:'<span class="no-review">☆ Sois le premier à donner ton avis</span>';}
 function card(p){const a=availability(p),old=isArchived(p);return `<article class="product-card"><button class="save" data-save="${e(p.id)}" aria-label="${state.favorites.includes(p.id)?'Retirer des':'Ajouter aux'} favoris : ${e(p.name)}" aria-pressed="${state.favorites.includes(p.id)}">${state.favorites.includes(p.id)?'♥':'♡'}</button><button class="product-open" data-product="${e(p.id)}" aria-label="Voir ${e(p.name)}"><div class="product-photo">${a.kind!=='current'?`<span class="availability-badge ${e(a.kind)}">${e(a.label)}</span>`:''}${imageMarkup(p,'loading="lazy" decoding="async"')}</div><div class="product-copy"><div class="brand-label"><span class="brand-dot"></span>${brands[p.brand]} · ${e(p.category)}</div><h3>${e(p.name)}</h3>${old?`<span class="edition-period">${e(periodLabel(p))}</span>`:''}<p class="short-desc">${e(p.description)}</p><div class="rating-line">${ratingMarkup(p)}</div></div></button><div class="price-row"><span>${old?'Seul à l’époque':'Produit seul'}<b class="${p.price?.solo==null?'price-missing':''}">${formatPrice(p.price?.solo,p.price?.kind==='catalogue')}</b></span><span>${old?'Menu à l’époque':'En menu'}<b class="${p.price?.menu==null?'price-missing':''}">${formatPrice(p.price?.menu,p.price?.kind==='catalogue')}</b></span></div></article>`;}
 function renderCalendar(){
- const today=parisClock().weekday;
- $('#rendez-vous h2 em').textContent=WEEKDAYS[calendarDay-1].toLowerCase()+' ?';
- const offers=products.filter(p=>!isArchived(p)&&p.schedule?.weekdays?.includes(calendarDay));
- $('#week-days').innerHTML=WEEKDAYS.map((day,i)=>`<button data-calendar-day="${i+1}" class="${calendarDay===i+1?'selected ':''}${today===i+1?'today':''}" aria-pressed="${calendarDay===i+1}"><strong>${day}</strong><small>${today===i+1?'Aujourd’hui':i===1?'Crazy mardi':i===2?'Mercredeal':i===6?'Poulet BK':'Les petits plans'}</small></button>`).join('');
- $('#weekly-offers').innerHTML=offers.length?offers.map(p=>`<button class="weekly-card" data-product="${e(p.id)}"><div><small>${brands[p.brand]} · ${WEEKDAYS[calendarDay-1]}</small><h3>${e(p.name)}</h3><p>${e(p.schedule.timeWindows?'Créneaux horaires et conditions dans la fiche.':p.schedule.conditions)}</p><span class="weekly-price">${p.price?.solo!=null||p.price?.menu!=null?formatPrice(p.price.solo??p.price.menu):'Voir les conditions'} ↗</span></div>${imageMarkup(p,'loading="lazy"')}</button>`).join(''):'<p>Aucune autre offre vérifiée pour ce jour. Le calendrier s’enrichit avec les sources des enseignes.</p>';
+ const week=buildWeek(products);$('#planner-week').textContent=week.label;
+ $('#week-timetable').innerHTML=week.days.map(day=>`<section class="planner-day ${day.today?'is-today':''}" aria-labelledby="planner-day-${day.weekday}"><header class="planner-day-heading"><h3 id="planner-day-${day.weekday}">${day.label}</h3><time datetime="${day.date}">${day.dayNumber}</time><small>${day.today?'Aujourd’hui':day.past?'Cette semaine':'À prévoir'}</small></header><div class="planner-day-content">${day.groups.length?day.groups.map(group=>`<article class="planner-event ${e(group.brand)}"><div class="planner-event-heading"><span class="planner-brand">${brands[group.brand]}</span><h4>${e(group.title)}</h4><small>${day.past?'Rendez-vous de ce jour':'Offre du jour'}</small></div><div class="planner-menus">${group.products.map(p=>`<button data-product="${e(p.id)}" class="planner-menu" aria-label="Voir ${e(p.name)}">${imageMarkup(p,'loading="lazy"')}<span><b>${e(p.name.replace(/^.*? · /,''))}</b><strong>${p.price?.solo!=null||p.price?.menu!=null?formatPrice(p.price.solo??p.price.menu):'Prix à vérifier'} <i aria-hidden="true">↗</i></strong></span></button>`).join('')}</div><span class="planner-conditions">${group.brand==='burgerking'&&group.title==='Mercredeal'?'Coupon Kingdom requis':'Conditions & composition dans la fiche'}</span></article>`).join(''):'<div class="planner-free"><span aria-hidden="true">✳</span><p>Pas d’offre spécifique vérifiée pour ce jour.</p><small>Les envies restent libres.</small></div>'}</div></section>`).join('');
+ $('#everyday-wrap').hidden=!week.everyday.length;
+ $('#weekly-offers').innerHTML=week.everyday.map(p=>`<button class="weekly-card" data-product="${e(p.id)}"><div><small>${brands[p.brand]} · TOUS LES JOURS</small><h3>${e(p.name)}</h3><p>${e((p.schedule.timeWindows||[]).map(([a,b])=>a+' à '+b).join(' puis '))}</p><span class="weekly-price">Horaires & conditions ↗</span></div>${imageMarkup(p,'loading="lazy"')}</button>`).join('');
 }
 function renderCollections(){
  for(const mode of ['carte','offres','souvenirs'])$('#count-'+mode).textContent=products.filter(p=>mode==='souvenirs'?isArchived(p):mode==='offres'?!isArchived(p)&&isOffer(p):!isArchived(p)).length;
@@ -81,7 +80,7 @@ document.addEventListener('click',async event=>{
  if(b.dataset.mode){$('#search').value='';update({mode:b.dataset.mode,day:'all',year:'all',brand:'all',category:'all',query:'',onlyNew:false,onlyFavorites:false});return;}
  if(b.dataset.day){update({day:b.dataset.day});return;}
  if(b.dataset.year){update({year:b.dataset.year});return;}
- if(b.dataset.calendarDay){calendarDay=Number(b.dataset.calendarDay);renderCalendar();return;}
+ if(b.id==='planner-today'){document.querySelector('.planner-day.is-today')?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});return;}
  // Les onglets d'enseigne ouvrent la carte complète, même après les nouveautés.
  if(b.dataset.brand){update({brand:b.dataset.brand,onlyNew:false});return;}
  if(b.id==='remove-new'){update({onlyNew:false});return;}

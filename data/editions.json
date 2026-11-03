@@ -1042,7 +1042,9 @@
       "weekdays": [
         7
       ],
-      "conditions": "Dans les restaurants participants, selon les stocks. Vérifie les conditions et le prix sur la fiche officielle."
+      "conditions": "Dans les restaurants participants, selon les stocks. Vérifie les conditions et le prix sur la fiche officielle.",
+      "campaign": "poulet-du-dimanche",
+      "campaignTitle": "Poulet du dimanche"
     },
     "allergenNote": "La composition et les allergènes varient selon les produits choisis dans le menu."
   },
@@ -1081,7 +1083,9 @@
       "weekdays": [
         7
       ],
-      "conditions": "Dans les restaurants participants, selon les stocks. Vérifie les conditions et le prix sur la fiche officielle."
+      "conditions": "Dans les restaurants participants, selon les stocks. Vérifie les conditions et le prix sur la fiche officielle.",
+      "campaign": "poulet-du-dimanche",
+      "campaignTitle": "Poulet du dimanche"
     },
     "allergenNote": "La composition et les allergènes varient selon les produits choisis dans le menu."
   },
@@ -1115,7 +1119,9 @@
       "weekdays": [
         7
       ],
-      "conditions": "Dans les restaurants participants, selon les stocks. Vérifie les conditions et le prix sur la fiche officielle."
+      "conditions": "Dans les restaurants participants, selon les stocks. Vérifie les conditions et le prix sur la fiche officielle.",
+      "campaign": "poulet-du-dimanche",
+      "campaignTitle": "Poulet du dimanche"
     },
     "allergenNote": "La composition et les allergènes varient selon les produits choisis dans le menu."
   },
@@ -1156,7 +1162,9 @@
       "weekdays": [
         3
       ],
-      "conditions": "Coupon Kingdom requis. Hors Masters, XXL, Double, Bon et Pas Cher et éditions limitées. Chaque coupon est utilisable une fois le mercredi."
+      "conditions": "Coupon Kingdom requis. Hors Masters, XXL, Double, Bon et Pas Cher et éditions limitées. Chaque coupon est utilisable une fois le mercredi.",
+      "campaign": "mercredeal",
+      "campaignTitle": "Mercredeal"
     },
     "allergenNote": "Les allergènes dépendent du burger, de l’accompagnement, de la boisson et du dessert choisis."
   },
@@ -1197,7 +1205,9 @@
       "weekdays": [
         3
       ],
-      "conditions": "Coupon Kingdom requis. Hors Masters, XXL, Double, Bon et Pas Cher et éditions limitées. Chaque coupon est utilisable une fois le mercredi."
+      "conditions": "Coupon Kingdom requis. Hors Masters, XXL, Double, Bon et Pas Cher et éditions limitées. Chaque coupon est utilisable une fois le mercredi.",
+      "campaign": "mercredeal",
+      "campaignTitle": "Mercredeal"
     },
     "allergenNote": "Les allergènes dépendent du burger, de l’accompagnement, de la boisson et du dessert choisis."
   },
@@ -1333,7 +1343,9 @@
       "weekdays": [
         2
       ],
-      "conditions": "Offre du mardi en France métropolitaine, dans la limite des stocks. Consulte les conditions KFC pour ton restaurant et ton canal de commande."
+      "conditions": "Offre du mardi en France métropolitaine, dans la limite des stocks. Consulte les conditions KFC pour ton restaurant et ton canal de commande.",
+      "campaign": "tuesday-deal",
+      "campaignTitle": "Crazy mardi"
     }
   },
   {
@@ -1375,7 +1387,9 @@
       "weekdays": [
         2
       ],
-      "conditions": "Offre du mardi en France métropolitaine, dans la limite des stocks. Consulte les conditions KFC pour ton restaurant et ton canal de commande."
+      "conditions": "Offre du mardi en France métropolitaine, dans la limite des stocks. Consulte les conditions KFC pour ton restaurant et ton canal de commande.",
+      "campaign": "tuesday-deal",
+      "campaignTitle": "Crazy mardi"
     }
   },
   {
@@ -1417,7 +1431,9 @@
       "weekdays": [
         2
       ],
-      "conditions": "Offre du mardi en France métropolitaine, dans la limite des stocks. Consulte les conditions KFC pour ton restaurant et ton canal de commande."
+      "conditions": "Offre du mardi en France métropolitaine, dans la limite des stocks. Consulte les conditions KFC pour ton restaurant et ton canal de commande.",
+      "campaign": "tuesday-deal",
+      "campaignTitle": "Crazy mardi"
     }
   },
   {

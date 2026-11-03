@@ -27,5 +27,9 @@ add({id:'kfc-boxmaster-3-euros-2026',brand:'kfc',name:'Boxmaster à 3 € · sep
 add({id:'kfc-chizza-2017',brand:'kfc',name:'Chizza · édition 2017',category:'Poulet',recordType:'product',description:'Une base de poulet pané à la place de la pâte, garnie de fromages, sauce tomate et pepperoni.',source:'https://www.snacking.fr/news-3196-snacking.php',image:'https://pub.snacking.fr/www/images/4adce0390d21f68946ef0d1ea8e56d63.jpg',...archive(2017,'Début 2017','Archive du lancement français de 2017, annoncé pour deux mois. La date exacte de fin n’est pas documentée.',{startsOn:'2017-01-31'})});
 // Les menus KFC étaient absents de l’import des produits unitaires.
 for(const p of read('research/kfc-browser.json').products.find(g=>g.section==='menu-1110').products.filter(p=>new URL(p.image).pathname.split('/').pop().startsWith('m-')))add({id:'kfc-menu-'+new URL(p.image).pathname.split('/').pop().replace('.jpg',''),brand:'kfc',name:p.name,image:p.image,source:'https://www.kfc.fr/notre-carte',description:'Menu de la gamme Raclette. Les choix d’accompagnement et de boisson sont à confirmer auprès du restaurant.',isNew:true});
+for(const p of entries.filter(p=>p.schedule)){
+ if(p.brand==='kfc'&&p.schedule.weekdays.length===1){p.schedule.campaign='tuesday-deal';p.schedule.campaignTitle='Crazy mardi';}
+ if(p.brand==='burgerking'&&p.schedule.weekdays.length===1){p.schedule.campaign=p.schedule.weekdays[0]===3?'mercredeal':'poulet-du-dimanche';p.schedule.campaignTitle=p.schedule.weekdays[0]===3?'Mercredeal':'Poulet du dimanche';}
+}
 fs.writeFileSync(new URL('data/editions.json',root),JSON.stringify(entries,null,2)+'\n');
 console.log(`${entries.length} menus, offres et éditions documentés`);
