@@ -66,7 +66,7 @@ Les signalements sont privés et consultables par l'administrateur dans Supabase
 4. Pousser sur la branche `main` ou lancer le workflow « Publier Croq sur GitHub Pages ».
 5. Reporter l'URL finale dans la configuration Supabase ci-dessus.
 
-Le workflow teste le catalogue et génère `config.js` à partir des variables. Il refuse de publier sans configuration Supabase ou avec une clé secrète reconnue. Aucun abonnement serveur Node n'est nécessaire : GitHub Pages sert `public/`, Supabase gère la base et OAuth.
+Le workflow teste le catalogue et génère `config.js` à partir des variables. `npm run build` prépare ensuite `dist/` avec une empreinte de version commune aux scripts, styles et données JSON. Elle empêche le navigateur de mélanger le nouvel HTML avec d'anciens modules en cache. Le workflow refuse de publier sans configuration Supabase ou avec une clé secrète reconnue. Aucun abonnement serveur Node n'est nécessaire : GitHub Pages sert `dist/`, Supabase gère la base et OAuth.
 
 Documentation : https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages.
 

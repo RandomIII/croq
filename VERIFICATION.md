@@ -4,7 +4,7 @@ Vérification locale du 3 novembre 2026.
 
 ## Réussi
 
-- Seize tests Node : catalogue, filtres, tri, validation et échappement des avis ; calendrier Europe/Paris, changement de jour en été/hiver, fins inclusives, horaires, filtres année/jour et recherche Crazy mardi.
+- Dix-sept tests Node : catalogue, filtres, tri, validation et échappement des avis ; calendrier Europe/Paris, changement de jour en été/hiver, fins inclusives, horaires, filtres année/jour et recherche Crazy mardi ; renouvellement de toute la chaîne JS/JSON à chaque nouvelle version publique.
 - Vérification syntaxique de l'application, du client Supabase et du serveur de prévisualisation.
 - Vérification dans le navigateur : chargement des photos, recherche Giant, favoris ajoutés puis retirés, prix du Giant seul et en menu avec contexte indicatif, ouverture et fermeture de fiche, onglets recette/allergènes/avis.
 - État explicite lorsque la sauvegarde des avis n'est pas encore configurée. Aucun faux succès de connexion ou publication.
