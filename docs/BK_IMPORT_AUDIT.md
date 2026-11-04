@@ -26,6 +26,8 @@ Les 954 références du relevé BK sont conservées : 598 produits et 356 formul
 
 Les éditions historiques déjà documentées gardent leurs dates. Un nouveau relevé ne supprime pas les références disparues et ne remplace pas une période connue par une absence d'information. Les identifiants des 518 fiches de la version précédente sont tous conservés, donc leurs avis restent rattachés aux mêmes références.
 
+Depuis le 4 novembre, l'affichage masque une référence non datée si le même nom normalisé est présent dans la même enseigne sur la carte actuelle. Les mots de recette, tailles et variantes « + » restent significatifs. Une édition historique documentée n'est pas masquée. Cette règle conserve les données sources et les avis ; elle s'applique avant les recherches, les filtres et le calcul des compteurs.
+
 Le catalogue réuni compte 1 291 fiches. Ce nombre inclut les références à dater et ne représente pas autant de produits actuellement vendus. Les données des trois autres enseignes sont conservées par la mise à jour BK.
 
 ## Vérifications

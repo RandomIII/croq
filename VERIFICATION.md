@@ -4,7 +4,8 @@ Vérification locale du 3 novembre 2026.
 
 ## Réussi
 
-- Vingt-six tests Node, dont six contrôles de l'import BK : lecture des blocs Flight, découverte de campagnes hors rayon, formules des nouveautés, périodes et prix sourcés, conservation des références et des données des autres enseignes, arrêt en cas de campagne principale omise.
+- Vingt-neuf tests Node, dont six contrôles de l'import BK et trois contrôles du masquage des doublons non datés : rapprochement avant filtrage, conservation des variantes et éditions documentées, respect des périodes de disponibilité.
+- Au 4 novembre 2026, 153 doublons « À dater » sont masqués à l'affichage. Les 1 291 fiches sources et leurs identifiants restent conservés ; 620 fiches sont visibles dans les souvenirs.
 - Planning vérifié dans le navigateur : sept colonnes, menus et photos associés, ouverture des fiches KFC et Mercredeal, défilement horizontal à 390 pixels et retour au jour courant.
 - Vérification syntaxique de l'application, du client Supabase et du serveur de prévisualisation.
 - Vérification dans le navigateur : chargement des photos, recherche Giant, favoris ajoutés puis retirés, prix du Giant seul et en menu avec contexte indicatif, ouverture et fermeture de fiche, onglets recette/allergènes/avis.

@@ -1,10 +1,22 @@
 // Logique pure partagée avec les tests. Aucun classement ou avis fictif.
-import {isArchived,isOffer} from './availability.js';
+import {isArchived,isOffer,parisClock} from './availability.js';
 export const brands = {mcdonalds:'McDonald’s',burgerking:'Burger King',quick:'Quick',kfc:'KFC'};
 export function escapeHtml(value='') { return String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function productIdentity(p){
+  // Les formats produit/menu peuvent désigner une même référence oubliée.
+  // On garde les mots de recette, tailles et « + » pour distinguer les variantes.
+  const name=(p.name||'').replace(/[®™]/g,'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().replace(/\+/g,' plus ').replace(/&/g,' et ').replace(/[^a-z0-9]+/g,' ').trim();
+  return p.brand&&name?p.brand+':'+name:null;
+}
+export function visibleCatalogue(products,now=new Date()){
+  const today=parisClock(now).date;
+  const available=new Set(products.filter(p=>!isArchived(p,now)&&p.temporal?.status!=='uncertain'&&(!p.temporal?.startsOn||p.temporal.startsOn<=today)).map(productIdentity).filter(Boolean));
+  // La source et les avis restent intacts. Seul le doublon non daté est masqué.
+  return products.filter(p=>!(isArchived(p,now)&&p.temporal?.certainty==='unconfirmed'&&available.has(productIdentity(p))));
+}
 export function filterProducts(products, state, ratings={}, now=new Date()) {
   const query=(state.query||'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
-  const result=products.filter(p=>{
+  const result=visibleCatalogue(products,now).filter(p=>{
     const text=[p.name,p.description,brands[p.brand],p.category,...(p.searchTerms||[])].join(' ').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
     const archived=isArchived(p,now),mode=state.mode||'carte';
     const modeOK=mode==='souvenirs'?archived:mode==='offres'?!archived&&isOffer(p):!archived;

@@ -1,4 +1,4 @@
-import {brands,escapeHtml as e,filterProducts,validateReview,formatPrice} from './catalogue.js';
+import {brands,escapeHtml as e,filterProducts,visibleCatalogue,validateReview,formatPrice} from './catalogue.js';
 import * as api from './backend.js';
 import {availability,isArchived,isOffer,periodLabel,WEEKDAYS} from './availability.js';
 import {buildWeek} from './planner.js';
@@ -25,11 +25,12 @@ function renderCalendar(){
  $('#weekly-offers').innerHTML=week.everyday.map(p=>`<button class="weekly-card" data-product="${e(p.id)}"><div><small>${brands[p.brand]} · TOUS LES JOURS</small><h3>${e(p.name)}</h3><p>${e(p.temporal?.endsOn?periodLabel(p):(p.schedule.timeWindows||[]).map(([a,b])=>a+' à '+b).join(' puis '))}</p><span class="weekly-price">${p.price?.solo!=null?'Dès '+formatPrice(p.price.solo)+' · ':''}Voir les conditions ↗</span></div>${imageMarkup(p,'loading="lazy"')}</button>`).join('');
 }
 function renderCollections(){
- for(const mode of ['carte','offres','souvenirs'])$('#count-'+mode).textContent=products.filter(p=>mode==='souvenirs'?isArchived(p):mode==='offres'?!isArchived(p)&&isOffer(p):!isArchived(p)).length;
+ const visible=visibleCatalogue(products);
+ for(const mode of ['carte','offres','souvenirs'])$('#count-'+mode).textContent=visible.filter(p=>mode==='souvenirs'?isArchived(p):mode==='offres'?!isArchived(p)&&isOffer(p):!isArchived(p)).length;
  $('#all-count').textContent=$('#count-'+state.mode).textContent;
  document.querySelectorAll('.catalogue-modes [data-mode]').forEach(b=>{b.classList.toggle('active',b.dataset.mode===state.mode);b.setAttribute('aria-pressed',b.dataset.mode===state.mode);});
- $('#collection-context').textContent=state.mode==='souvenirs'?'Les éditions passées et les références retrouvées restent ici, avec leurs avis. « À dater » signifie que la période de vente et le retrait ne sont pas confirmés. Les dates et tarifs historiques restent attachés à leur édition.':state.mode==='offres'?'Les rendez-vous de la semaine, les promotions et les éditions du moment. Ouvre une fiche pour connaître les horaires, coupons et conditions.':'La carte et les campagnes françaises relevées, menus compris. Les anciennes références et celles à dater se retrouvent dans la boîte à souvenirs.';
- $('#temporal-filters').innerHTML=state.mode==='souvenirs'?['all','unknown',...new Set(products.filter(p=>isArchived(p)).map(p=>p.editionYear).filter(Boolean).sort((a,b)=>b-a))].map(y=>`<button data-year="${y}" class="${String(state.year)===String(y)?'active':''}" aria-pressed="${String(state.year)===String(y)}">${y==='all'?'Toutes les années':y==='unknown'?'À dater':y}</button>`).join(''):state.mode==='offres'?['all',1,2,3,4,5,6,7].map(d=>`<button data-day="${d}" class="${String(state.day)===String(d)?'active':''}" aria-pressed="${String(state.day)===String(d)}">${d==='all'?'Tous les jours':WEEKDAYS[d-1]}</button>`).join(''):'';
+ $('#collection-context').textContent=state.mode==='souvenirs'?'Les éditions passées et les références retrouvées restent ici, avec leurs avis. « À dater » signifie que la période de vente et le retrait ne sont pas confirmés. Une référence non datée est masquée lorsqu’un produit du même nom est disponible dans la même enseigne. Les éditions historiques documentées restent visibles.':state.mode==='offres'?'Les rendez-vous de la semaine, les promotions et les éditions du moment. Ouvre une fiche pour connaître les horaires, coupons et conditions.':'La carte et les campagnes françaises relevées, menus compris. Les anciennes références et celles à dater se retrouvent dans la boîte à souvenirs.';
+ $('#temporal-filters').innerHTML=state.mode==='souvenirs'?['all','unknown',...new Set(visible.filter(p=>isArchived(p)).map(p=>p.editionYear).filter(Boolean).sort((a,b)=>b-a))].map(y=>`<button data-year="${y}" class="${String(state.year)===String(y)?'active':''}" aria-pressed="${String(state.year)===String(y)}">${y==='all'?'Toutes les années':y==='unknown'?'À dater':y}</button>`).join(''):state.mode==='offres'?['all',1,2,3,4,5,6,7].map(d=>`<button data-day="${d}" class="${String(state.day)===String(d)?'active':''}" aria-pressed="${String(state.day)===String(d)}">${d==='all'?'Tous les jours':WEEKDAYS[d-1]}</button>`).join(''):'';
 }
 function render(){
  renderCollections();
